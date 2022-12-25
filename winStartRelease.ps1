@@ -1,0 +1,1 @@
+Start-Process -FilePath "out\build\x64-Release\FakeCamTCPClient.exe" -ArgumentList "10.0.0.2","4823"

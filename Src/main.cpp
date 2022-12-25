@@ -9,11 +9,20 @@
 
 int main(int argc, char* argv[])
 {
+    if (argc < 3)
+    {
+        printf("Must two parameters(now is %d): first IP and second PORT\n", argc);
+        return EXIT_FAILURE;
+    }
+
+    printf("IP: %s\n",argv[1]);
+    printf("PORT: %s\n", argv[2]);
+
     auto pool = std::make_shared<ArrayPool::ArrayPool<char>>();
     ArrayPool::MemoryOwnerFactory<char> mof(std::move(pool));
     FakeCamTCPClient::TCPClient client(
-        "10.0.0.2",
-        "4823",
+        argv[1],
+        argv[2],
         mof
     );
 
