@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
     auto pool = std::make_shared<ArrayPool::ArrayPool<char>>();
     ArrayPool::MemoryOwnerFactory<char> mof(std::move(pool));
     FakeCamTCPClient::TCPClient client(
-        "127.0.0.1",
+        "10.0.0.2",
         "4823",
         mof
     );
