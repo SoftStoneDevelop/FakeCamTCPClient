@@ -1,1 +1,1 @@
-Start-Process -FilePath "out\build\x64-Debug\FakeCamTCPClient.exe" -ArgumentList "10.0.0.2","4823"
+Start-Process -FilePath "out\build\x64-Debug\FakeCamTCPClient.exe" -ArgumentList "127.0.0.1","4823"
