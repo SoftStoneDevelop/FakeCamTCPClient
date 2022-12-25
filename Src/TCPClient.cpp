@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <cassert>
 
-namespace FakeCamTCPClient
+namespace FakeCamClient
 {
 	TCPClient::TCPClient(
 		std::string&& host,

@@ -19,7 +19,7 @@
 #include "MemoryOwner.hpp"
 #include "MemoryOwnerFactory.hpp"
 
-namespace FakeCamTCPClient
+namespace FakeCamClient
 {
 	class TCPClient
 	{

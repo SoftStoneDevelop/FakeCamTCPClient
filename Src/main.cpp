@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
     auto pool = std::make_shared<ArrayPool::ArrayPool<char>>();
     ArrayPool::MemoryOwnerFactory<char> mof(std::move(pool));
-    FakeCamTCPClient::TCPClient client(
+    FakeCamClient::TCPClient client(
         argv[1],
         argv[2],
         mof
