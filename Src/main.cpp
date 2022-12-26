@@ -38,6 +38,11 @@ int main(int argc, char* argv[])
     {
         std::cout << "Enter command:" << std::endl;
         std::getline(std::cin, command);
+        if(command == "Exit")
+        {
+            break;
+        }
+
         client.sendCommand(command.data(), command.size(), responce);
         std::cout << responce.data();
     }

@@ -1,20 +1,9 @@
 #pragma once
+
+#if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
-
-#include <string>
-#include <mutex>
-#include <stdlib.h>
-#include <stdio.h>
-#include <future>
-
-#include <windows.h>
 #include <winsock2.h>
-#include <ws2tcpip.h>
-
-// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
-#pragma comment (lib, "Ws2_32.lib")
-#pragma comment (lib, "Mswsock.lib")
-#pragma comment (lib, "AdvApi32.lib")
+#endif
 
 #include "MemoryOwner.hpp"
 #include "MemoryOwnerFactory.hpp"
@@ -38,7 +27,7 @@ namespace FakeCamClient
 		TCPClient& operator=(const TCPClient& other) = delete;
 
 		bool Connect();
-		void close();
+        void close_();
 
 		bool sendCommand(
 			const char* data, const int dataSize, 
@@ -52,7 +41,12 @@ namespace FakeCamClient
 
 		std::string host_;
 		std::string port_;
-		SOCKET connectSocket_ = INVALID_SOCKET;
+
+#if defined(_WIN32)
+        SOCKET connectSocket_ = INVALID_SOCKET;
+#elif defined(__linux__)
+        int connectSocket_ = -1;
+#endif
 
 		bool sendShutdown_ = false;
 		bool isConnected_ = false;
