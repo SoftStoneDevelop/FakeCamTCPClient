@@ -128,7 +128,7 @@ namespace FakeCamClient
 #elif defined(__linux__)
         if( (connectSocket_ = socket(AF_INET , SOCK_STREAM , 0)) == 0)
         {
-            printf("socket failed with error: %d\n", strerror(errno));
+            printf("socket failed with error: %s\n", strerror(errno));
             close(connectSocket_);
             return false;
         }
@@ -143,7 +143,7 @@ namespace FakeCamClient
         iResult = getaddrinfo(NULL, port_.c_str(), &hints, &listenSocketAdress);
         if (iResult != 0)
         {
-            printf("getaddrinfo failed with error: %d\n", strerror(errno));
+            printf("getaddrinfo failed with error: %s\n", strerror(errno));
             close(connectSocket_);
             return false;
         }
@@ -158,7 +158,7 @@ namespace FakeCamClient
             {
                 close(connectSocket_);
                 freeaddrinfo(listenSocketAdress);
-                printf("socket failed with error: %d\n", strerror(errno));
+                printf("socket failed with error: %s\n", strerror(errno));
                 return false;
             }
 
@@ -214,7 +214,7 @@ namespace FakeCamClient
 #elif defined(__linux__)
         if (iResult == -1)
         {
-            printf("send failed with error: %d\n", strerror(errno));
+            printf("send failed with error: %s\n", strerror(errno));
             close(connectSocket_);
             return false;
         }
@@ -222,7 +222,7 @@ namespace FakeCamClient
         iResult = send(connectSocket_, "\n", 1, 0);
         if (iResult == -1)
         {
-            printf("send failed with error: %d\n", strerror(errno));
+            printf("send failed with error: %s\n", strerror(errno));
             close(connectSocket_);
             return false;
         }
@@ -252,7 +252,7 @@ namespace FakeCamClient
 #elif defined(__linux__)
             if (recived < 0)
             {
-                printf("recv failed with error: %d\n", strerror(errno));
+                printf("recv failed with error: %s\n", strerror(errno));
                 close(connectSocket_);
                 return false;
             }
