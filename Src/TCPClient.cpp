@@ -194,38 +194,75 @@ namespace FakeCamClient
 	)
 	{
 		int iResult = send(connectSocket_, data, dataSize, 0);
+#if defined(_WIN32)
+        if (iResult == SOCKET_ERROR)
+        {
+            printf("send failed with error: %d\n", WSAGetLastError());
+            closesocket(connectSocket_);
+            WSACleanup();
+            return false;
+        }
+
+        iResult = send(connectSocket_, "\n", 1, 0);
+        if (iResult == SOCKET_ERROR)
+        {
+            printf("send failed with error: %d\n", WSAGetLastError());
+            closesocket(connectSocket_);
+            WSACleanup();
+            return false;
+        }
+#elif defined(__linux__)
         if (iResult == -1)
-		{
+        {
             printf("send failed with error: %d\n", strerror(errno));
             close(connectSocket_);
-			return false;
-		}
+            return false;
+        }
 
-		iResult = send(connectSocket_, "\n", 1, 0);
+        iResult = send(connectSocket_, "\n", 1, 0);
         if (iResult == -1)
-		{
+        {
             printf("send failed with error: %d\n", strerror(errno));
             close(connectSocket_);
-			return false;
-		}
-
+            return false;
+        }
+#endif
 		bool findNewline = false;
 		int readSize = 0;
 		while (!findNewline)
 		{
             int recived = recv(connectSocket_, readBuffer_.data(), readBuffer_.size(), 0);
-			if (recived < 0)
-			{
+#if defined(_WIN32)
+            if (recived < 0)
+            {
+                printf("recv failed with error: %d\n", WSAGetLastError());
+                closesocket(connectSocket_);
+                WSACleanup();
+
+                return false;
+            }
+            else if (recived == 0)
+            {
+                printf("connection close");
+                closesocket(connectSocket_);
+                WSACleanup();
+
+                return false;
+            }
+#elif defined(__linux__)
+            if (recived < 0)
+            {
                 printf("recv failed with error: %d\n", strerror(errno));
                 close(connectSocket_);
-				return false;
-			}
-			else if(recived == 0)
-			{
-				printf("connection close");
+                return false;
+            }
+            else if (recived == 0)
+            {
+                printf("connection close");
                 close(connectSocket_);
-				return false;
-			}
+                return false;
+            }
+#endif
 
 			if (responce.size() - (readSize + recived) <= 0)
 			{
