@@ -45,5 +45,7 @@ Server:
 Client:
 1. The client architecture should make it easy to add new commands and change the logic of the existing ones.
 
-Common:<br>
-Language and Libraries: ISO C++ (up to and including 17) and its standard library, Boost and/or glibc (for Linux).
+Common:
+1. Language and Libraries: ISO C++ (up to and including 17) and its standard library, Boost and/or glibc (for Linux).
+2. The code must be designed to build and run modern distributions of the Linux OS.
+3. Build system: GNU Make or CMake.
