@@ -31,12 +31,11 @@ Commands:
 | get-led-rate | | OK 0..5, FAILED |get LED rate|
 
 Examples:
-Req – request, Res – response.
-Req: "get-led-state\n"
-Res: "OK on\n"
-
-Req: "set-led-color yellow\n"
-Res: "FAILED\n"
+Req – request, Res – response.<br>
+Req: "get-led-state\n"<br>
+Res: "OK on\n"<br><br>
+Req: "set-led-color yellow\n"<br>
+Res: "FAILED\n"<br>
 
 Server:
 1. The server architecture should make it easy to add new commands and change the logic of the existing ones.
