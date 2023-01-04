@@ -45,5 +45,5 @@ Server:
 Client:
 1. The client architecture should make it easy to add new commands and change the logic of the existing ones.
 
-Common:
+Common:<br>
 Language and Libraries: ISO C++ (up to and including 17) and its standard library, Boost and/or glibc (for Linux).
