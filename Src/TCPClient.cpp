@@ -193,40 +193,55 @@ namespace FakeCamClient
 		ArrayPool::MemoryOwner<char>& responce
 	)
 	{
-		int iResult = send(connectSocket_, data, dataSize, 0);
+        int iResult;
+        int needSend = dataSize;
+        int offset = 0;
+        while (needSend > 0)
+        {
+            iResult = send(connectSocket_, data + offset, needSend, 0);
 #if defined(_WIN32)
-        if (iResult == SOCKET_ERROR)
-        {
-            printf("send failed with error: %d\n", WSAGetLastError());
-            closesocket(connectSocket_);
-            WSACleanup();
-            return false;
-        }
-
-        iResult = send(connectSocket_, "\n", 1, 0);
-        if (iResult == SOCKET_ERROR)
-        {
-            printf("send failed with error: %d\n", WSAGetLastError());
-            closesocket(connectSocket_);
-            WSACleanup();
-            return false;
-        }
+            if (iResult == SOCKET_ERROR)
+            {
+                printf("send failed with error: %d\n", WSAGetLastError());
+                closesocket(connectSocket_);
+                WSACleanup();
+                return false;
+            }
 #elif defined(__linux__)
-        if (iResult == -1)
-        {
-            printf("send failed with error: %s\n", strerror(errno));
-            close(connectSocket_);
-            return false;
-        }
-
-        iResult = send(connectSocket_, "\n", 1, 0);
-        if (iResult == -1)
-        {
-            printf("send failed with error: %s\n", strerror(errno));
-            close(connectSocket_);
-            return false;
-        }
+            if (iResult == -1)
+            {
+                printf("send failed with error: %s\n", strerror(errno));
+                close(connectSocket_);
+                return false;
+            }
 #endif
+            needSend -= iResult;
+            offset += iResult;
+        }
+        
+        needSend = 1;
+        while (needSend > 0)
+        {
+            iResult = send(connectSocket_, "\n", needSend, 0);
+#if defined(_WIN32)
+            if (iResult == SOCKET_ERROR)
+            {
+                printf("send failed with error: %d\n", WSAGetLastError());
+                closesocket(connectSocket_);
+                WSACleanup();
+                return false;
+            }
+#elif defined(__linux__)
+            if (iResult == -1)
+            {
+                printf("send failed with error: %s\n", strerror(errno));
+                close(connectSocket_);
+                return false;
+            }
+#endif
+            needSend -= iResult;
+        };
+
 		bool findNewline = false;
 		int readSize = 0;
 		while (!findNewline)
